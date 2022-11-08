@@ -1,0 +1,62 @@
+import random
+import string
+
+num = input('How many pencils would you like to use:\n')
+while True:
+    if num == '0':
+        num = input('The number of pencils should be positive\n')
+    elif num in string.ascii_letters or num in string.punctuation:
+        num = input('The number of pencils should be numeric\n')
+    else:
+        try:
+            num = int(num)
+            break
+        except:
+            num = input('The number of pencils should be numeric\n')
+
+flag = False
+players = ['John', 'Jack']
+name = input('Who will be the first (John, Jack):\n')
+if name == 'Jack':
+    flag = True
+while True:
+    if name not in players:
+        name = input("Choose between 'John' and 'Jack'\n")
+    else:
+        break
+
+count = 0
+while int(num) > 0:
+    if name == 'John':
+        print('|' * int(num), sep='')
+        turn = input(f"{name}'s turn!\n")
+        while True:
+            if turn not in string.digits:
+                turn = input("Possible values: '1', '2' or '3'\n")
+            elif int(turn) > 3 or int(turn) <= 0:
+                turn = input("Possible values: '1', '2' or '3'\n")
+            elif int(turn) > int(num):
+                turn = input('Too many pencils were taken\n')
+            else:
+                turn = int(turn)
+                break
+        print(turn)
+        count += 1
+        num = int(num) - turn
+        name = 'Jack'
+    elif name == 'Jack':
+        print('|' * int(num), sep='')
+        print(f"{name}'s turn:")
+        if flag == True:
+            turn_bot = 1
+            if count > 0:
+                turn_bot = 4 - turn
+        elif int(num) <= 3:
+            turn_bot = int(num)
+        else:
+            turn_bot = random.randint(1, 3)
+        print(turn_bot)
+        num = int(num) - turn_bot
+        name = 'John'
+
+print(f'{name} won!')
